@@ -38,10 +38,10 @@
 
 Point it at your database, map your rules to columns, and get:
 - **Instant validation** with failure counts, percentages, and drill-down samples
-- **AI diagnosis** that explains what's wrong and why it matters
+- **AI diagnosis** that conversationally explains what's wrong and why it matters 
 - **Exportable reports** in CSV and Excel with colour-coded severity
 
-> **The core idea:** Your data team writes the rules. DataDoctor enforces them — and explains every failure in plain English.
+> **The core idea:** Your data team writes the rules. DataDoctor enforces them — and explains every failure in plain conversational English.
 
 ---
 
@@ -336,7 +336,7 @@ db-data-validator/
 - [x] Docker containerisation
 - [x] Healthcare demo dataset (55,500 rows)
 
-### 🔜 Phase 7 — Multi-Database Support
+### 🔜 Future Development: Phase 1 — Multi-Database Support
 
 - [ ] **PostgreSQL** support
 - [ ] **MySQL / MariaDB** support
@@ -345,7 +345,7 @@ db-data-validator/
 - [ ] **SQLite** for local/lightweight use
 - [ ] Auto-detect database dialect for validation SQL
 
-### 🔮 Phase 8 — Intelligence Layer
+### 🔮 Future Development: Phase 2 — Intelligence Layer
 
 - [ ] **Auto-rule generation** — AI suggests rules from schema analysis
 - [ ] **Anomaly detection** — statistical outlier flagging without manual rules
@@ -353,7 +353,7 @@ db-data-validator/
 - [ ] **Scheduled validation** — run validations on a cron schedule
 - [ ] **Alerting** — email/Slack notifications on critical failures
 
-### 🌐 Phase 9 — Enterprise
+### 🌐 Future Development: Phase 3 — Enterprise
 
 - [ ] **Multi-user support** — role-based access
 - [ ] **Audit trail** — full history of validations
