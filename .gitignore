@@ -1,5 +1,21 @@
+# Environment
 .env
+
+# Python
 __pycache__/
-.venv/
 *.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+
+# Generated data files (too large for git)
+healthcare_data*.sql
+
+# Claude AI config
+.claude/
+
+# OS files
 .DS_Store
+Thumbs.db

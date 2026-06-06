@@ -1,0 +1,208 @@
+{
+  "rule_set_name": "Healthcare Patient Records",
+  "category": "string",
+  "version": "1.1",
+  "description": "Validation rules for Kaggle Healthcare Dataset loaded into dbo.PatientRecords.",
+  "rules": [
+    {
+      "rule_id": "HC_001",
+      "rule_name": "Patient Name Not Blank",
+      "column_type": "string",
+      "rule_description": "Patient name must not be NULL or empty",
+      "validation_logic": "[COLUMN] IS NOT NULL AND LTRIM(RTRIM([COLUMN])) <> ''",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_002",
+      "rule_name": "Patient Name Proper Case",
+      "column_type": "string",
+      "rule_description": "Patient name should not contain irregular mixed case (e.g. 'Bobby JacksOn'). Uses case-sensitive collation to detect lowercase-then-uppercase or word starting with lowercase.",
+      "validation_logic": "[COLUMN] IS NULL OR (PATINDEX('%[a-z][A-Z]%', [COLUMN] COLLATE Latin1_General_CS_AS) = 0 AND PATINDEX('% [a-z]%', [COLUMN] COLLATE Latin1_General_CS_AS) = 0)",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_003",
+      "rule_name": "Age Not Null",
+      "column_type": "numeric",
+      "rule_description": "Patient age must be present",
+      "validation_logic": "[COLUMN] IS NOT NULL",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_004",
+      "rule_name": "Age Reasonable Range",
+      "column_type": "numeric",
+      "rule_description": "Patient age must be between 0 and 120 years",
+      "validation_logic": "[COLUMN] IS NULL OR ([COLUMN] >= 0 AND [COLUMN] <= 120)",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_005",
+      "rule_name": "Age Adult Check",
+      "column_type": "numeric",
+      "rule_description": "Flag patients under 18 for pediatric review",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] >= 18",
+      "severity": "INFO"
+    },
+    {
+      "rule_id": "HC_006",
+      "rule_name": "Gender Valid Value",
+      "column_type": "string",
+      "rule_description": "Gender must be Male or Female",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('Male', 'Female')",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_007",
+      "rule_name": "Blood Type Valid",
+      "column_type": "string",
+      "rule_description": "Blood type must be a valid ABO/Rh type: A+, A-, B+, B-, AB+, AB-, O+, O-",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('A+','A-','B+','B-','AB+','AB-','O+','O-')",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_008",
+      "rule_name": "Medical Condition Valid",
+      "column_type": "string",
+      "rule_description": "Medical condition must be from approved list",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('Cancer','Obesity','Diabetes','Asthma','Hypertension','Arthritis')",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_009",
+      "rule_name": "Admission Date Not Null",
+      "column_type": "date",
+      "rule_description": "Date of admission is required for all records",
+      "validation_logic": "[COLUMN] IS NOT NULL",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_010",
+      "rule_name": "Admission Date Not Future",
+      "column_type": "date",
+      "rule_description": "Admission date cannot be in the future",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] <= CAST(GETDATE() AS DATE)",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_011",
+      "rule_name": "Admission Date Reasonable",
+      "column_type": "date",
+      "rule_description": "Admission date should not be before year 2000",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] >= '2000-01-01'",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_012",
+      "rule_name": "Discharge Date Not Null",
+      "column_type": "date",
+      "rule_description": "Discharge date is required — NULL may indicate incomplete record",
+      "validation_logic": "[COLUMN] IS NOT NULL",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_013",
+      "rule_name": "Discharge Date Not Future",
+      "column_type": "date",
+      "rule_description": "Discharge date cannot be in the future",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] <= CAST(GETDATE() AS DATE)",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_014",
+      "rule_name": "Doctor Name Not Blank",
+      "column_type": "string",
+      "rule_description": "Attending doctor name must be present",
+      "validation_logic": "[COLUMN] IS NOT NULL AND LTRIM(RTRIM([COLUMN])) <> ''",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_015",
+      "rule_name": "Hospital Name Not Blank",
+      "column_type": "string",
+      "rule_description": "Hospital name must be present",
+      "validation_logic": "[COLUMN] IS NOT NULL AND LTRIM(RTRIM([COLUMN])) <> ''",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_016",
+      "rule_name": "Insurance Provider Valid",
+      "column_type": "string",
+      "rule_description": "Insurance provider must be from approved payer list",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('Medicare','Medicaid','Blue Cross','Aetna','UnitedHealthcare','Cigna')",
+      "severity": "INFO"
+    },
+    {
+      "rule_id": "HC_017",
+      "rule_name": "Billing Amount Not Null",
+      "column_type": "numeric",
+      "rule_description": "Billing amount must be present",
+      "validation_logic": "[COLUMN] IS NOT NULL",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_018",
+      "rule_name": "Billing Amount Positive",
+      "column_type": "numeric",
+      "rule_description": "Billing amount must be greater than zero",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] > 0",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "HC_019",
+      "rule_name": "Billing Amount Reasonable",
+      "column_type": "numeric",
+      "rule_description": "Billing amount above $100,000 may indicate data entry error",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] <= 100000",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_020",
+      "rule_name": "Room Number Positive",
+      "column_type": "numeric",
+      "rule_description": "Room number must be a positive integer",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] > 0",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_021",
+      "rule_name": "Room Number Valid Range",
+      "column_type": "numeric",
+      "rule_description": "Room number should be between 1 and 500",
+      "validation_logic": "[COLUMN] IS NULL OR ([COLUMN] >= 1 AND [COLUMN] <= 500)",
+      "severity": "INFO"
+    },
+    {
+      "rule_id": "HC_022",
+      "rule_name": "Admission Type Valid",
+      "column_type": "string",
+      "rule_description": "Admission type must be Elective, Emergency, or Urgent",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('Elective','Emergency','Urgent')",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "HC_023",
+      "rule_name": "Medication Not Blank",
+      "column_type": "string",
+      "rule_description": "Medication field should be populated for all admitted patients",
+      "validation_logic": "[COLUMN] IS NOT NULL AND LTRIM(RTRIM([COLUMN])) <> ''",
+      "severity": "INFO"
+    },
+    {
+      "rule_id": "HC_024",
+      "rule_name": "Medication Valid Value",
+      "column_type": "string",
+      "rule_description": "Medication must be from approved formulary list",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('Aspirin','Ibuprofen','Penicillin','Paracetamol','Lipitor')",
+      "severity": "INFO"
+    },
+    {
+      "rule_id": "HC_025",
+      "rule_name": "Test Results Valid Value",
+      "column_type": "string",
+      "rule_description": "Test results must be Normal, Abnormal, or Inconclusive",
+      "validation_logic": "[COLUMN] IS NULL OR [COLUMN] IN ('Normal','Abnormal','Inconclusive')",
+      "severity": "WARNING"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "rule_set_name": "Generic Numeric Column Rules",
+  "category": "numeric",
+  "version": "1.0",
+  "description": "Reusable validation rules for numeric columns (INT, BIGINT, DECIMAL, MONEY)",
+  "rules": [
+    {
+      "rule_id": "NUM_001",
+      "rule_name": "Numeric Must Be Positive",
+      "column_type": "numeric",
+      "rule_description": "Numeric values must be greater than zero",
+      "validation_logic": "[COLUMN] > 0",
+      "severity": "CRITICAL",
+      "allow_negative": false,
+      "allow_zero": false,
+      "allow_decimals": true
+    },
+    {
+      "rule_id": "NUM_002",
+      "rule_name": "Numeric Not Negative",
+      "column_type": "numeric",
+      "rule_description": "Numeric values cannot be negative",
+      "validation_logic": "[COLUMN] >= 0",
+      "severity": "WARNING",
+      "allow_negative": false,
+      "allow_zero": true,
+      "allow_decimals": true
+    },
+    {
+      "rule_id": "NUM_003",
+      "rule_name": "Numeric Within Reasonable Range",
+      "column_type": "numeric",
+      "rule_description": "Numeric values should be within a reasonable business range",
+      "validation_logic": "[COLUMN] >= 0 AND [COLUMN] <= 1000000",
+      "severity": "INFO",
+      "allow_negative": false,
+      "allow_zero": true,
+      "allow_decimals": true
+    }
+  ]
+}

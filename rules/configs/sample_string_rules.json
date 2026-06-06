@@ -1,0 +1,38 @@
+{
+  "rule_set_name": "Generic String Column Rules",
+  "category": "string",
+  "version": "1.0",
+  "description": "Reusable validation rules for string columns (VARCHAR, NVARCHAR, CHAR)",
+  "rules": [
+    {
+      "rule_id": "STR_001",
+      "rule_name": "String Not Blank",
+      "column_type": "string",
+      "rule_description": "String values cannot be empty or whitespace-only",
+      "validation_logic": "[COLUMN] IS NOT NULL AND LTRIM(RTRIM([COLUMN])) != ''",
+      "severity": "WARNING",
+      "min_length": 1,
+      "max_length": null
+    },
+    {
+      "rule_id": "STR_002",
+      "rule_name": "String Length Within Limits",
+      "column_type": "string",
+      "rule_description": "String length should not exceed 500 characters",
+      "validation_logic": "LEN([COLUMN]) <= 500",
+      "severity": "INFO",
+      "min_length": 0,
+      "max_length": 500
+    },
+    {
+      "rule_id": "STR_003",
+      "rule_name": "String No Leading/Trailing Spaces",
+      "column_type": "string",
+      "rule_description": "String values should not have leading or trailing spaces",
+      "validation_logic": "[COLUMN] = LTRIM(RTRIM([COLUMN]))",
+      "severity": "INFO",
+      "min_length": null,
+      "max_length": null
+    }
+  ]
+}

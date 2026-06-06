@@ -1,0 +1,32 @@
+{
+  "rule_set_name": "Generic Date Column Rules",
+  "category": "date",
+  "version": "1.0",
+  "description": "Reusable validation rules for date/datetime columns (DATETIME, DATE)",
+  "rules": [
+    {
+      "rule_id": "DATE_001",
+      "rule_name": "Date Not In Future",
+      "column_type": "date",
+      "rule_description": "Date values should not be in the future",
+      "validation_logic": "[COLUMN] <= CAST(GETDATE() AS DATE)",
+      "severity": "WARNING"
+    },
+    {
+      "rule_id": "DATE_002",
+      "rule_name": "Date Not Before Year 1900",
+      "column_type": "date",
+      "rule_description": "Date values should be after January 1, 1900",
+      "validation_logic": "[COLUMN] >= '1900-01-01'",
+      "severity": "CRITICAL"
+    },
+    {
+      "rule_id": "DATE_003",
+      "rule_name": "Date Within Reasonable Range",
+      "column_type": "date",
+      "rule_description": "Date values should be within a 150-year window (past and future)",
+      "validation_logic": "[COLUMN] >= '1900-01-01' AND [COLUMN] <= DATEADD(YEAR, 50, GETDATE())",
+      "severity": "INFO"
+    }
+  ]
+}
