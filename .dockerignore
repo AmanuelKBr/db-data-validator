@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+.venv/
+
+# Secrets
+.env
+
+# Git
+.git/
+.gitignore
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated data files (too large)
+healthcare_data*.sql
+
+# Claude AI config
+.claude/
+
+# Fix scripts (not needed in container)
+fix_generator.py
+generate_healthcare_data.py
+load_healthcare_data.py

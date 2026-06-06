@@ -362,7 +362,7 @@ _DEFAULTS = {
     "db_connector": None, "validation_results": None, "batch_results": None,
     "selected_rulesets": [], "selected_issue_key": None, "rule_mapper": RuleMapper(),
     "validation_mode": "single", "available_databases": [],
-    "server_tested": False, "tested_server_name": None,
+    "server_tested": False, "tested_server_name": None, "tested_credentials": None,
     "data_doctor": None, "data_doctor_enabled": True,
     "data_doctor_analysis": None, "followup_messages": [],
     "data_doctor_model": None,
@@ -382,16 +382,27 @@ for _k, _v in _DEFAULTS.items():
 with st.sidebar:
     st.markdown("### 🗄️ Database")
     server = st.text_input("Server", placeholder="localhost or IP", key="server_input")
+    username = st.text_input("Username", placeholder="Blank = Windows Auth", key="username_input")
+    password = st.text_input("Password", type="password", key="password_input")
 
-    if server and not st.session_state.server_tested:
+    # Show Test Connection whenever server or credentials differ from the last successful test
+    _needs_test = (
+        not st.session_state.server_tested
+        or st.session_state.tested_server_name != server
+        or st.session_state.tested_credentials != (username, password)
+    )
+
+    if server and _needs_test:
         if st.button("🔍 Test Connection", use_container_width=True):
             try:
-                tmp = SQLServerConnector(server, "master", "", "")
+                tmp = SQLServerConnector(server, "master", username, password)
                 if tmp.connect():
                     dbs = tmp.get_database_list()
+                    tmp.disconnect()
                     st.session_state.available_databases = dbs or []
                     st.session_state.server_tested = True
                     st.session_state.tested_server_name = server
+                    st.session_state.tested_credentials = (username, password)
                     st.success("✅ Server reachable")
                     st.rerun()
                 else:
@@ -401,13 +412,11 @@ with st.sidebar:
 
     if (st.session_state.server_tested
             and st.session_state.tested_server_name == server
+            and st.session_state.tested_credentials == (username, password)
             and st.session_state.available_databases):
         database = st.selectbox("Database", st.session_state.available_databases, key="database_select")
     else:
         database = st.text_input("Database", placeholder="Enter manually", key="database_input")
-
-    username = st.text_input("Username", placeholder="Blank = Windows Auth", key="username_input")
-    password = st.text_input("Password", type="password", key="password_input")
 
     if st.button("Connect", use_container_width=True):
         try:

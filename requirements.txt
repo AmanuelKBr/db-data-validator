@@ -7,4 +7,5 @@ plotly==5.18.0
 pandas==2.1.4
 polars==0.20.4
 duckdb==0.9.2
-openpyxl==3.1.5faker==40.19.1
+openpyxl==3.1.5
+faker==40.19.1

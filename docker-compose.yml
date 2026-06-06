@@ -1,0 +1,40 @@
+# ── DataDoctor — docker-compose.yml ──────────────────────────────────────────
+#
+# Usage:
+#   docker compose up --build      ← first run (builds image)
+#   docker compose up              ← subsequent runs
+#   docker compose down            ← stop and remove container
+#
+# ── SQL Server connection (enter these in the app sidebar) ────────────────────
+#   Server:   host.docker.internal,1434
+#   Login:    datadoctor
+#   Password: (set in SQL Server; reset via: ALTER LOGIN datadoctor WITH PASSWORD='...')
+#
+#   WHY port 1434:  another container (crypto-sqlserver) owns 0.0.0.0:1433,
+#   so the Windows SQL Server (BETHAMAN/MSSQLSERVER) was moved to TCP 1434.
+#   Registry key: HKLM\...\MSSQL15.MSSQLSERVER\...\SuperSocketNetLib\Tcp\IPAll
+#   TcpPort = 1434  (changed from 1433)
+#
+# ── Ollama (local LLM) ────────────────────────────────────────────────────────
+#   .env sets OLLAMA_API_URL=http://localhost:11434 which is the host value.
+#   Inside Docker, "localhost" means the container itself, so we override it
+#   here to use host.docker.internal instead.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  datadoctor:
+    build: .
+    container_name: datadoctor
+    ports:
+      - "8501:8501"                        # http://localhost:8501
+    env_file:
+      - .env                               # GROQ_API_KEY, base OLLAMA_API_URL, etc.
+    environment:
+      # Override localhost → host.docker.internal so Ollama is reachable from container
+      - OLLAMA_API_URL=http://host.docker.internal:11434
+    volumes:
+      - ./rules/configs:/app/rules/configs # live-reload rules without rebuild
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # reach host SQL Server and Ollama on Linux too
+    restart: unless-stopped
