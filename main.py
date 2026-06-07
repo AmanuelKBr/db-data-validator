@@ -498,7 +498,39 @@ with st.sidebar:
 
 # ── not connected ─────────────────────────────────────────────────────────────
 if not st.session_state.db_connector:
-    st.info("👈 Connect to a database in the sidebar to begin")
+    _, _c, _ = st.columns([1, 2, 1])
+    with _c:
+        st.markdown("""
+        <div style="text-align:center;padding:40px 0 20px 0;">
+            <p style="font-size:1.05rem;opacity:.7;">No database connected yet.</p>
+            <p style="font-size:.85rem;opacity:.5;">Connect via the sidebar — or explore a live demo below.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("🎭  Try Live Demo — Healthcare Dataset (55,500 rows)",
+                     use_container_width=True, key="demo_btn"):
+            from demo_data import get_demo_report
+            st.session_state.validation_results = get_demo_report()
+            st.session_state.batch_results = None
+            st.session_state.selected_issue_key = None
+            st.session_state.data_doctor_analysis = None
+            st.session_state.followup_messages = []
+            st.session_state.last_validation_config = {
+                "mode": "single",
+                "table": "dbo.PatientRecords",
+                "rulesets": ["healthcare_records_rules.json"],
+                "schema": {
+                    "Name": "nvarchar", "Age": "int", "Gender": "nvarchar",
+                    "BloodType": "nvarchar", "MedicalCondition": "nvarchar",
+                    "DateOfAdmission": "date", "Doctor": "nvarchar",
+                    "Hospital": "nvarchar", "InsuranceProvider": "nvarchar",
+                    "BillingAmount": "decimal", "RoomNumber": "int",
+                    "AdmissionType": "nvarchar", "DischargeDate": "date",
+                    "Medication": "nvarchar", "TestResults": "nvarchar"
+                },
+                "sn": "dbo", "tn": "PatientRecords",
+            }
+            st.rerun()
+        st.caption("🐳 Run `docker compose up` locally to connect your own SQL Server database.")
     st.stop()
 
 st.markdown(
