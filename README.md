@@ -28,7 +28,7 @@
 
 <br/>
 
-*▶ Click to watch full demo (5 min) — healthcare dataset validation + AI diagnosis*
+*▶ Click the image below 👇 to watch full demo video (5 min) — healthcare dataset validation + AI diagnosis*
 
 [![DataDoctor Full Demo](https://img.youtube.com/vi/RGXMODYhJXk/maxresdefault.jpg)](https://youtu.be/RGXMODYhJXk)
 
