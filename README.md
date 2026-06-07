@@ -24,7 +24,7 @@
 
 <br/>
 
-[🚀 Live Demo](#-live-demo) · [⚡ Quick Start](#-quick-start) · [📋 Rules Guide](#-writing-validation-rules) · [🗺️ Roadmap](#️-roadmap)
+[🚀 Live Demo](https://datadoc-db-ai-data-validator.streamlit.app) · [⚡ Quick Start](#-quick-start) · [📋 Rules Guide](#-writing-validation-rules) · [🗺️ Roadmap](#️-roadmap)
 
 <br/>
 
