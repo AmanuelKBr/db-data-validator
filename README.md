@@ -28,6 +28,12 @@
 
 <br/>
 
+[![DataDoctor Full Demo](https://img.youtube.com/vi/RGXMODYhJXk/maxresdefault.jpg)](https://youtu.be/RGXMODYhJXk)
+
+*▶ Click to watch full demo (5 min) — healthcare dataset validation + AI diagnosis*
+
+<br/>
+
 </div>
 
 ---
@@ -334,6 +340,7 @@ db-data-validator/
 - [x] CSV + Excel export
 - [x] Batch validation (multi-table)
 - [x] Docker containerisation
+- [x] Streamlit Cloud deployment with demo mode
 - [x] Healthcare demo dataset (55,500 rows)
 
 ### 🔜 Future Development: Phase 1 — Multi-Database Support
