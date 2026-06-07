@@ -498,40 +498,41 @@ with st.sidebar:
 
 # ── not connected ─────────────────────────────────────────────────────────────
 if not st.session_state.db_connector:
-    _, _c, _ = st.columns([1, 2, 1])
-    with _c:
-        st.markdown("""
-        <div style="text-align:center;padding:40px 0 20px 0;">
-            <p style="font-size:1.05rem;opacity:.7;">No database connected yet.</p>
-            <p style="font-size:.85rem;opacity:.5;">Connect via the sidebar — or explore a live demo below.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("🎭  Try Live Demo — Healthcare Dataset (55,500 rows)",
-                     use_container_width=True, key="demo_btn"):
-            from demo_data import get_demo_report
-            st.session_state.validation_results = get_demo_report()
-            st.session_state.batch_results = None
-            st.session_state.selected_issue_key = None
-            st.session_state.data_doctor_analysis = None
-            st.session_state.followup_messages = []
-            st.session_state.last_validation_config = {
-                "mode": "single",
-                "table": "dbo.PatientRecords",
-                "rulesets": ["healthcare_records_rules.json"],
-                "schema": {
-                    "Name": "nvarchar", "Age": "int", "Gender": "nvarchar",
-                    "BloodType": "nvarchar", "MedicalCondition": "nvarchar",
-                    "DateOfAdmission": "date", "Doctor": "nvarchar",
-                    "Hospital": "nvarchar", "InsuranceProvider": "nvarchar",
-                    "BillingAmount": "decimal", "RoomNumber": "int",
-                    "AdmissionType": "nvarchar", "DischargeDate": "date",
-                    "Medication": "nvarchar", "TestResults": "nvarchar"
-                },
-                "sn": "dbo", "tn": "PatientRecords",
-            }
-            st.rerun()
-        st.caption("🐳 Run `docker compose up` locally to connect your own SQL Server database.")
-    st.stop()
+    if not st.session_state.validation_results and not st.session_state.batch_results:
+        _, _c, _ = st.columns([1, 2, 1])
+        with _c:
+            st.markdown("""
+            <div style="text-align:center;padding:40px 0 20px 0;">
+                <p style="font-size:1.05rem;opacity:.7;">No database connected yet.</p>
+                <p style="font-size:.85rem;opacity:.5;">Connect via the sidebar — or explore a live demo below.</p>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button("🎭  Try Live Demo — Healthcare Dataset (55,500 rows)",
+                         use_container_width=True, key="demo_btn"):
+                from demo_data import get_demo_report
+                st.session_state.validation_results = get_demo_report()
+                st.session_state.batch_results = None
+                st.session_state.selected_issue_key = None
+                st.session_state.data_doctor_analysis = None
+                st.session_state.followup_messages = []
+                st.session_state.last_validation_config = {
+                    "mode": "single",
+                    "table": "dbo.PatientRecords",
+                    "rulesets": ["healthcare_records_rules.json"],
+                    "schema": {
+                        "Name": "nvarchar", "Age": "int", "Gender": "nvarchar",
+                        "BloodType": "nvarchar", "MedicalCondition": "nvarchar",
+                        "DateOfAdmission": "date", "Doctor": "nvarchar",
+                        "Hospital": "nvarchar", "InsuranceProvider": "nvarchar",
+                        "BillingAmount": "decimal", "RoomNumber": "int",
+                        "AdmissionType": "nvarchar", "DischargeDate": "date",
+                        "Medication": "nvarchar", "TestResults": "nvarchar"
+                    },
+                    "sn": "dbo", "tn": "PatientRecords",
+                }
+                st.rerun()
+            st.caption("🐳 Want to validate your own data? Clone the repo on GitHub and run `docker compose up` on your local machine.")
+        st.stop()
 
 st.markdown(
     '<span style="color:#10b981;font-size:.8rem;">●</span>'
@@ -541,7 +542,7 @@ st.markdown(
 st.markdown("")
 
 rule_loader = RuleLoader()
-all_tables  = st.session_state.db_connector.get_tables()
+all_tables = st.session_state.db_connector.get_tables() if st.session_state.db_connector else []
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SETUP PANEL  (hidden once results are showing)
